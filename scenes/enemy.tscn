@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://jvik2kucs0ef"]
+
+[ext_resource type="Texture2D" uid="uid://ca513f5s5u4ji" path="res://KennyAssets/SpaceShooterRedux/Enemies/enemyRed1.png" id="1_7p1mj"]
+[ext_resource type="Script" uid="uid://jy8lbv1b08t4" path="res://scripts/enemy.gd" id="1_md0e3"]
+[ext_resource type="PackedScene" uid="uid://dum0jam5mi4vj" path="res://scenes/bullet.tscn" id="2_4ra3w"]
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_md0e3")
+bullet_scene = ExtResource("2_4ra3w")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_7p1mj")
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-11, 36, -24, 40, -45, -15, -29, -39, -13, -32, -10, -22, 9, -22, 13, -32, 29, -40, 45, -16, 23, 39, 13, 35, 21, 8, 14, 7, 10, 14, -10, 14, -15, 7, -20, 10)
+
+[node name="canon" type="Marker2D" parent="."]
+position = Vector2(0, 38)
+
+[node name="shoot_timer" type="Timer" parent="."]
+wait_time = 1.5
+autostart = true
+
+[connection signal="timeout" from="shoot_timer" to="." method="_on_shoot_timer_timeout"]

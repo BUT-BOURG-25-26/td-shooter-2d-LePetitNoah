@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdopjubmdooig"]
+
+[ext_resource type="Texture2D" uid="uid://8g1w52ipin4d" path="res://KennyAssets/SpaceShooterRedux/playerShip3_red.png" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://bn7vj06vruwjx" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="PackedScene" uid="uid://dum0jam5mi4vj" path="res://scenes/bullet.tscn" id="2_qhqgy"]
+[ext_resource type="Texture2D" uid="uid://bl60qiw4itgm0" path="res://KennyAssets/SpaceShooterRedux/Effects/shield2.png" id="4_dqkch"]
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 6
+script = ExtResource("1_g2els")
+bullet_scene = ExtResource("2_qhqgy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_3vyb7")
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+visibility_layer = 3
+position = Vector2(-0.25, -4)
+scale = Vector2(0.975, 1)
+polygon = PackedVector2Array(-4.87179, -33, 4.35897, -33, 10.5128, -18, 49.4872, 26, 49.4872, 32, 21.7949, 32, 14.6154, 40, -14.1026, 40, -22.3077, 32, -48.9744, 32, -48.9744, 26, -10, -19)
+
+[node name="canon" type="Marker2D" parent="."]
+position = Vector2(0, -66)
+
+[node name="shoot_timer" type="Timer" parent="."]
+wait_time = 0.75
+autostart = true
+
+[node name="invincibility_timer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="shield" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("4_dqkch")
+
+[connection signal="timeout" from="shoot_timer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="timeout" from="invincibility_timer" to="." method="_on_invincibility_timer_timeout"]

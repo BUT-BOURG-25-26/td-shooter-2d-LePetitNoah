@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3 uid="uid://c6pnktmpnc53c"]
+
+[ext_resource type="Script" uid="uid://sqkas7nj5m4l" path="res://scripts/main_scene.gd" id="1_pw63i"]
+[ext_resource type="PackedScene" uid="uid://bdopjubmdooig" path="res://scenes/player.tscn" id="1_w2twt"]
+[ext_resource type="Texture2D" uid="uid://dtnl7mrf7dbqe" path="res://KennyAssets/SpaceShooterRedux/Backgrounds/purple.png" id="2_c16ls"]
+[ext_resource type="PackedScene" uid="uid://dbfkjbxmy65ms" path="res://scenes/enenmy_spawner.tscn" id="3_7ykc4"]
+[ext_resource type="Script" uid="uid://b4vjhryqxbk2j" path="res://scripts/camera_2d.gd" id="3_c1pb6"]
+[ext_resource type="Script" uid="uid://bf2d8ro5ow5aq" path="res://scripts/killing_volumes.gd" id="4_pu3yx"]
+[ext_resource type="PackedScene" uid="uid://mky53j75fc1j" path="res://scenes/player_health.tscn" id="5_gubc5"]
+[ext_resource type="PackedScene" uid="uid://bis1er4sc4fls" path="res://scenes/player_score.tscn" id="6_rt2n2"]
+[ext_resource type="PackedScene" uid="uid://m4xlcjp8bxs7" path="res://scenes/game_over.tscn" id="8_18nlu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gubc5"]
+size = Vector2(728.25, 20)
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_pw63i")
+
+[node name="Parallax2D" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.2, 0.2)
+repeat_size = Vector2(256, 256)
+repeat_times = 10
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
+texture = ExtResource("2_c16ls")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+rotation = -0.174533
+anchor_mode = 0
+script = ExtResource("3_c1pb6")
+
+[node name="Player" parent="." instance=ExtResource("1_w2twt")]
+position = Vector2(360, 500)
+
+[node name="EnenmySpawner" parent="." instance=ExtResource("3_7ykc4")]
+
+[node name="killing_volumes" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("4_pu3yx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="killing_volumes"]
+position = Vector2(363.875, -10)
+shape = SubResource("RectangleShape2D_gubc5")
+
+[node name="killing_volumes2" type="Area2D" parent="."]
+position = Vector2(0, 1190)
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("4_pu3yx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="killing_volumes2"]
+position = Vector2(364, 101)
+shape = SubResource("RectangleShape2D_gubc5")
+
+[node name="PlayerHealth" parent="." instance=ExtResource("5_gubc5")]
+
+[node name="PlayerScoreUi" parent="." instance=ExtResource("6_rt2n2")]
+offset_left = 570.0
+offset_right = 570.0
+
+[node name="GameOver" parent="." instance=ExtResource("8_18nlu")]
+visible = false
+offset_left = 360.0
+offset_top = 640.0
+offset_right = 360.0
+offset_bottom = 640.0
+
+[connection signal="area_entered" from="killing_volumes" to="killing_volumes" method="_on_area_entered"]
+[connection signal="area_entered" from="killing_volumes2" to="killing_volumes2" method="_on_area_entered"]
+[connection signal="body_entered" from="killing_volumes2" to="." method="_on_killing_volumes_2_body_entered"]
+[connection signal="body_entered" from="killing_volumes2" to="killing_volumes2" method="_on_body_entered"]

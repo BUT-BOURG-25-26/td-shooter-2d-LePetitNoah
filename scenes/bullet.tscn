@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dum0jam5mi4vj"]
+
+[ext_resource type="Texture2D" uid="uid://cqffxp47lfa07" path="res://KennyAssets/SpaceShooterRedux/Lasers/laserBlue01.png" id="1_mkf8s"]
+[ext_resource type="Script" uid="uid://dtxarinl1jvox" path="res://scripts/bullet.gd" id="1_y25gk"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y25gk"]
+radius = 5.0
+height = 54.0
+
+[node name="Bullet" type="Area2D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_y25gk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_mkf8s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_y25gk")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
